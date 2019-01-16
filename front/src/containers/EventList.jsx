@@ -31,6 +31,7 @@ class EventList extends Component {
     // if (filter === "%%") ? (<p/>) : (this.props.updateFilter({ [filter] : "%%"}));
   }
 
+
   render() {
     console.log(this.props.filterEvents); //console.log pour tester les events filtrés
     return (

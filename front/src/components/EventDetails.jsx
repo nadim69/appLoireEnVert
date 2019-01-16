@@ -2,17 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import backgroundEuro from "../assets/euro.png";
-import {
-  Container,
-  Card,
-  CardImg,
-  CardBody,
-  Button,
-  CardText,
-  CardSubtitle,
-  Row,
-  Col
-} from "reactstrap";
+import { Container, Card, CardImg, CardBody, Button, CardText, CardSubtitle, Row, Col } from "reactstrap";
 import retourFleche from "../assets/retourFleche.png";
 import moment from "moment";
 import HeadBack from "./headBack";
@@ -58,24 +48,28 @@ class EventDetails extends Component {
   }
 
   componentWillMount() {
-    axios.get(`http://vps635285.ovh.net:5000/event/${this.id}`).then(result => {
-      console.log(result.data);
-      this.setState({
-        image: result.data.image,
-        name: result.data.name,
-        type: result.data.type,
-        who: result.data.who,
-        where: result.data.event_where,
-        start: result.data.event_date_start,
-        finish: result.data.event_date_finish,
-        place: result.data.place,
-        city: result.data.city,
-        description: result.data.description,
-        free: result.data.free,
-        lat: result.data.lat,
-        lng: result.data.lng
+    axios.all([
+      axios.get(`https://loireenvert.fr/wp-json/wp/v2/event/${this.id}`),
+      axios.get(`https://loireenvert.fr/wp-json/wp/v2/location/${this.id}`)
+    ])
+      .then(result => {
+        console.log(result.data);
+        this.setState({
+          image: result.data.image,
+          name: result.data.name,
+          type: result.data.type,
+          who: result.data.who,
+          where: result.data.event_where,
+          start: result.data.event_date_start,
+          finish: result.data.event_date_finish,
+          place: result.data.place,
+          city: result.data.city,
+          description: result.data.description,
+          free: result.data.free,
+          lat: result.data.lat,
+          lng: result.data.lng
+        });
       });
-    });
   }
 
   // fonction Anaële qui rappelle la page précédement visitée
@@ -105,8 +99,8 @@ class EventDetails extends Component {
                         {this.state.free === "true" ? (
                           <h1> </h1>
                         ) : (
-                          <div style={styleEuro.euro} />
-                        )}
+                            <div style={styleEuro.euro} />
+                          )}
                         <div className={this.state.type} />
                       </div>
                     </p>
@@ -120,11 +114,11 @@ class EventDetails extends Component {
                     </CardSubtitle>
                     <p className="place-eventDetails">{this.state.place}</p>
                     <p className="city-eventDetails">
-                    {this.state.city === "null" ? (
-                      <h1> </h1>
-                    ) : (
-                      <p> {this.state.city}</p>
-                    )}</p>
+                      {this.state.city === "null" ? (
+                        <h1> </h1>
+                      ) : (
+                          <p> {this.state.city}</p>
+                        )}</p>
                     <CardText className="description-event">
                       {this.state.description}
                     </CardText>
@@ -133,15 +127,15 @@ class EventDetails extends Component {
                       {this.state.free === "true" ? (
                         <h1> </h1>
                       ) : (
-                        <Button
-                          color="success"
-                          className="inscription-button"
-                          href="https://loireenvert.fr/"
-                        >
-                          {" "}
-                          Je m'inscris
+                          <Button
+                            color="success"
+                            className="inscription-button"
+                            href="https://loireenvert.fr/"
+                          >
+                            {" "}
+                            Je m'inscris
                         </Button>
-                      )}
+                        )}
                     </div>
                   </CardBody>
                 </div>

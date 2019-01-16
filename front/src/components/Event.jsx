@@ -38,7 +38,7 @@ const Event = ({ event }) => (
         <CardBody className="cardContent">
           <LinesEllipsis
             className="eventTitle"
-            text={event.name}
+            text={event.title.rendered}
             maxLine="2"
             basedOn="letters"
           />

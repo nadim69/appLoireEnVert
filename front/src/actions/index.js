@@ -17,7 +17,7 @@ export const updateFilter = filter => ({
   filter
 });
 
-// recupération dans la bdd
+// recupération API
 export const fetchEvents = filter => {
   console.log("filter", filter);
   return dispatch => {
@@ -25,7 +25,7 @@ export const fetchEvents = filter => {
     return (
       axios
         // Julie Lisa : filter est un req.body est le même que filter dans updateFilter
-        .post("http://vps635285.ovh.net:5000/event", filter)
+        .get("https://loireenvert.fr/wp-json/wp/v2/event", filter)
         .then(response => {
           const activeEvents = response.data;
           console.log("response", response.data);
