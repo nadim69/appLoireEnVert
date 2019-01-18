@@ -25,7 +25,7 @@ export const fetchEvents = filter => {
     return (
       axios
         // Julie Lisa : filter est un req.body est le même que filter dans updateFilter
-        .get("https://loireenvert.fr/wp-json/wp/v2/event", filter)
+        .get("https://loireenvert.fr/wp-json/wp/v2/event")
         .then(response => {
           const activeEvents = response.data;
           console.log("response", response.data);

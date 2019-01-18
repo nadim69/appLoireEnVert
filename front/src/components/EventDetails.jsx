@@ -67,10 +67,11 @@ class EventDetails extends Component {
           description: result.data.description,
           free: result.data.free,
           lat: result.data.lat,
-          lng: result.data.lng
+          lng: result.data.lng,
+          link: result.data.link
         });
       });
-  }
+  } 
 
   // fonction Anaële qui rappelle la page précédement visitée
   goBack = () => {
@@ -124,18 +125,18 @@ class EventDetails extends Component {
                     </CardText>
 
                     <div>
-                      {this.state.free === "true" ? (
+                      {/* {this.state.free === "true" ? (
                         <h1> </h1>
-                      ) : (
+                      ) : ( */}
                           <Button
                             color="success"
                             className="inscription-button"
-                            href="https://loireenvert.fr/"
+                            href={this.state.link}
                           >
                             {" "}
-                            Je m'inscris
+                            Plus d'informations  
                         </Button>
-                        )}
+                        {/* )} */}
                     </div>
                   </CardBody>
                 </div>

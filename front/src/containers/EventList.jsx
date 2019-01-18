@@ -13,17 +13,32 @@ import HeaderNoBack from "../components/headNoBack";
 import { Link } from "react-router-dom";
 
 class EventList extends Component {
+  constructor() {
+    super()
+    this.state = {
+      eventsfiltre: []
+    }
+  }
   componentWillMount() {
     console.log("here", this.props.filterEvents);
     //filterEvents dispatchée par Fetchevents(Monica/Nadim)
-    this.props.functionCallDispatchFetchEvents(this.props.filterEvents);
+    this.props.functionCallDispatchFetchEvents();
   }
 
   //Lisa : on renvoie de nouveaux props quand on appuie sur les boutons de filtre jours
+  // Julie : filtres where et who pour l'API
   componentWillReceiveProps(newprops) {
     console.log("newprops", newprops);
-    if (this.props.filterEvents !== newprops.filterEvents)
-      this.props.functionCallDispatchFetchEvents(newprops.filterEvents);
+    const evtFilt = newprops.activeEvents.events.filter((event) => {
+      return (
+        (newprops.filterEvents.where === '%%' || event.location === newprops.filterEvents.where)
+        && (newprops.filterEvents.who === '%%' || event.target === newprops.filterEvents.who)
+    )
+    })
+    console.log(evtFilt)
+    this.setState({
+      eventsfiltre: evtFilt
+    })
   }
 
   cancelFilter(filter) {
@@ -46,44 +61,44 @@ class EventList extends Component {
             {/* Nadim: une ternaire qui affiche les events si le tableau est rempli sinon un message s'il n'ya pas d'event*/}
             <Row className="phraseResultats">
               {this.props.filterEvents.who !== null &&
-              this.props.filterEvents.who !== "%%" ? (
-                <Button
-                  className="close-button"
-                  aria-label="Close alert"
-                  type="button"
-                  data-close
-                  onClick={() => this.cancelFilter("who")}
-                >
-                  {this.props.filterEvents.who}{" "}
-                  <span className="crossClose" aria-hidden="true">
-                    &times;
+                this.props.filterEvents.who !== "%%" ? (
+                  <Button
+                    className="close-button"
+                    aria-label="Close alert"
+                    type="button"
+                    data-close
+                    onClick={() => this.cancelFilter("who")}
+                  >
+                    {this.props.filterEvents.who}{" "}
+                    <span className="crossClose" aria-hidden="true">
+                      &times;
                   </span>
-                </Button>
-              ) : (
-                ""
-              )}{" "}
+                  </Button>
+                ) : (
+                  ""
+                )}{" "}
               {this.props.filterEvents.where !== null &&
-              this.props.filterEvents.where !== "%%" ? (
-                <Button
-                  className="close-button"
-                  aria-label="Close alert"
-                  type="button"
-                  data-close
-                  onClick={() => this.cancelFilter("where")}
-                >
-                  {this.props.filterEvents.where}{" "}
-                  <span className="crossClose" aria-hidden="true">
-                    &times;
+                this.props.filterEvents.where !== "%%" ? (
+                  <Button
+                    className="close-button"
+                    aria-label="Close alert"
+                    type="button"
+                    data-close
+                    onClick={() => this.cancelFilter("where")}
+                  >
+                    {this.props.filterEvents.where}{" "}
+                    <span className="crossClose" aria-hidden="true">
+                      &times;
                   </span>
-                </Button>
-              ) : (
-                ""
-              )}
+                  </Button>
+                ) : (
+                  ""
+                )}
             </Row>
-            {this.props.activeEvents.events.length > 0 ? (
+            {this.state.eventsfiltre.length > 0 ? (
               <div>
                 <Row>
-                  {this.props.activeEvents.events.map((event, index) => (
+                  {this.state.eventsfiltre.map((event, index) => (
                     <Col xs="12" sm="12" md="6">
                       <Event key={`event${index}`} event={event} />
                     </Col>
@@ -91,16 +106,16 @@ class EventList extends Component {
                 </Row>
               </div>
             ) : (
-              <Card className="cardnoEvent">
-                <div className="titreNoevent">
-                  <h2>Aucun événement ne correspond à votre recherche </h2>
-                  <br />
-                  <button type="button" className="buttonSearch">
-                    <Link to="/"> Nouvelle recherche </Link>
-                  </button>
-                </div>
-              </Card>
-            )}
+                <Card className="cardnoEvent">
+                  <div className="titreNoevent">
+                    <h2>Aucun événement ne correspond à votre recherche </h2>
+                    <br />
+                    <button type="button" className="buttonSearch">
+                      <Link to="/"> Nouvelle recherche </Link>
+                    </button>
+                  </div>
+                </Card>
+              )}
 
             <div className="espace"> </div>
             <ButtonToTop scrollStepInPx="50" delayInMs="16.66" />
